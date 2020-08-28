@@ -1,34 +1,44 @@
 {% set name = "pydp" %}
-{% set version = "0.1.4dev" %}
+{% set version = "0.1.7dev" %}
 
 package:
   name: {{ name|lower }}
   version: {{ version }}
 
 source:
-  url: https://github.com/OpenMined/PyDP/archive/v{{ version }}.tar.gz
-  sha256: 9cc736b453fa65ed0a97a89b95a54349fae229bba98e0c761335c81fabadbabb
+  # Source code
+  - url: https://github.com/OpenMined/PyDP/archive/v{{ version }}.tar.gz
+    sha256: 719e5a424bc60862d264ea4e712e9f74699b127b06910be6e6b70b4abd5c4147
 
 build:
   number: 0
-  script: {{ PYTHON }} -m pip install . -vv
+  script: {{ PYTHON }} -m pip install --no-deps https://files.pythonhosted.org/packages/69/29/14f872cdc51277eef6f5c4669d0fe21826c066b7c8bb299989beabbdb5bc/python_dp-0.1.7-cp35-cp35m-macosx_10_15_x86_64.whl # [osx and py==35]
+  script: {{ PYTHON }} -m pip install --no-deps https://files.pythonhosted.org/packages/61/11/8a15fa46954fa0214f5678d0360afa935ade71236369eeb3d4de7335751c/python_dp-0.1.7-cp35-cp35m-manylinux1_x86_64.whl # [linux and py==35]
+  script: {{ PYTHON }} -m pip install --no-deps https://files.pythonhosted.org/packages/35/67/cf466d1b28559d1fb00665ce503346ff5538b98f8a3c66d8a6c27ce2e11c/python_dp-0.1.7-cp36-cp36m-macosx_10_15_x86_64.whl #[osx and py==36]
+  script: {{ PYTHON }} -m pip install --no-deps https://files.pythonhosted.org/packages/91/7e/aba588a3b69ca0ccd0bf73deac11ea17c2114041f15dac92f8698decca00/python_dp-0.1.7-cp36-cp36m-manylinux1_x86_64.whl # [linux and py==36]
+  script: {{ PYTHON }} -m pip install --no-deps https://files.pythonhosted.org/packages/c2/85/1522b26fe889eabe759c4df319e348e6cf30cdb317412ed8f3cea4d5a76a/python_dp-0.1.7-cp37-cp37m-macosx_10_15_x86_64.whl #[osx and py==37]
+  script: {{ PYTHON }} -m pip install --no-deps https://files.pythonhosted.org/packages/c6/65/f6ee715f72b4ed614e411ca81c921ecd75d7c767193eb53b2d5ed7bbf930/python_dp-0.1.7-cp37-cp37m-manylinux1_x86_64.whl # [linux and py==37]
+  script: {{ PYTHON }} -m pip install --no-deps https://files.pythonhosted.org/packages/6c/0c/dd52a07847205fccd3ea6b285dec7ced29ec3c3375252190f26c408a6380/python_dp-0.1.7-cp38-cp38-macosx_10_15_x86_64.whl #[osx and py==38]
+  script: {{ PYTHON }} -m pip install --no-deps https://files.pythonhosted.org/packages/5e/92/6e8c80beea777789719677af0bd095fff35f003d2a4993d0a5b983923b45/python_dp-0.1.7-cp38-cp38-manylinux1_x86_64.whl # [linux and py==38]
+
   skip: True  # [win]
 
 requirements:
-  build:
-    - {{ compiler('cxx') }}
-    - bazel
   host:
     - python
     - pip
     - pytest
   run:
+    - libstdcxx-ng
+    - libgcc-ng
     - python
     - pytest
 
 test:
   imports:
     - pydp
+  commands:
+    - python -m pytest tests
 
 about:
   home: https://github.com/OpenMined/PyDP
@@ -40,6 +50,4 @@ about:
 
 extra:
   recipe-maintainers:
-    - oblute
-    - rluria14
-    - ndmaxar
+    - alejandrosame
